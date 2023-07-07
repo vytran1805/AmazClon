@@ -29,6 +29,7 @@
 //   },
 // ];
 import { products } from "../data/products.js";
+import { cart } from "../data/cart.js";
 // generate html for each of the products using loop
 let productHTML = "";
 for (let i = 0; i < products.length; i++) {
@@ -75,15 +76,41 @@ for (let i = 0; i < products.length; i++) {
       <img src="images/icons/checkmark.png">
       Added
     </div>
-
-    <button class="add-to-cart-button button-primary">
+    <button class="add-to-cart-button button-primary js-add-to-cart"
+    data-product-id='${products[i].id} data-product-quantity='${products[i].quantity}'>
       Add to Cart
     </button>
   </div>`;
 }
+//create a matching item to see if it's already in cart
+// target the div that contains all the products and e productHTMproductPlacement
+document.querySelector(".js-products-grid").innerHTML = productHTML;
 
-// target the div that contains all the products and assign it to productPlacement
-const productPlacement = document.querySelector(".js-products-grid");
+// target all the add-to-cart button and loop through each button
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    // target the data attribute of each button
+    const productId = button.dataset.productId;     //get name of the product
+    const productQuantity = button.dataset.productQuantity  //get quantity of the product
+    let matchingItem;
 
-// add the productHTML to productPlacement
-productPlacement.innerHTML = productHTML;
+    cart.forEach((item) => {
+      // check if the product is alreadyh in cart
+      if (productId === item.productId) {
+        // if yes, don't add new item
+        matchingItem = item;
+      }
+    });
+    // if the product is in the cart, increase the quantity
+    if (matchingItem) {
+      matchingItem.quantity += 1;
+    } else {
+      // if it is not in the cart, add it to the cart
+      cart.push({
+        productId,
+        quantity: 1,
+      });
+    }
+    console.log(cart);
+  });
+});
