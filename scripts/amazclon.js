@@ -77,10 +77,12 @@ for (let i = 0; i < products.length; i++) {
       Added
     </div>
     <button class="add-to-cart-button button-primary js-add-to-cart"
-    data-product-id='${products[i].id} data-product-quantity='${products[i].quantity}'>
-      Add to Cart
+    data-product-id='${products[i].id} data-product-quantity='${
+    products[i].quantity
+  }'>
+    Add to Cart
     </button>
-  </div>`;
+    </div>`;
 }
 //create a matching item to see if it's already in cart
 // target the div that contains all the products and e productHTMproductPlacement
@@ -90,8 +92,8 @@ document.querySelector(".js-products-grid").innerHTML = productHTML;
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     // target the data attribute of each button
-    const productId = button.dataset.productId;     //get name of the product
-    const productQuantity = button.dataset.productQuantity  //get quantity of the product
+    const productId = button.dataset.productId; //get name of the product
+    const productQuantity = button.dataset.productQuantity; //get quantity of the product
     let matchingItem;
 
     cart.forEach((item) => {
@@ -111,6 +113,13 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
         quantity: 1,
       });
     }
-    console.log(cart);
+    // Calculate the total quantity of all items in the cart
+    let totalQuantity = 0;
+    cart.forEach((item) => {
+      totalQuantity += item.quantity;
+    });
+    //Target the cart div and assign totalQuantity value
+    document.querySelector(".js-cart-quantity").innerHTML = totalQuantity;
+
   });
 });
